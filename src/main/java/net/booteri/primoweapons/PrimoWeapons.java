@@ -1,7 +1,10 @@
 package net.booteri.primoweapons;
 
 import com.mojang.logging.LogUtils;
+import net.booteri.primoweapons.item.ModCreativeModeTabs;
+import net.booteri.primoweapons.item.ModItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,9 +28,12 @@ public class PrimoWeapons
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public PrimoWeapons()
-    {
+    public PrimoWeapons() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModCreativeModeTabs.register(modEventBus);
+
+        ModItems.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -44,6 +50,11 @@ public class PrimoWeapons
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)  {
+
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS){
+            event.accept(ModItems.BLOODSHARD);
+            event.accept(ModItems.BLOOD_CRYSTAL);
+        }
 
     }
 
